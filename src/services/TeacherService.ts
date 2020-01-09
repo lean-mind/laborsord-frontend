@@ -8,6 +8,11 @@ const marshaller = require('@aws-sdk/eventstream-marshaller');
 // tslint:disable-next-line:no-var-requires
 const MicrophoneStream = require('microphone-stream');
 
+// tslint:disable-next-line:no-var-requires
+const SockJS = require('sockjs-client');
+// tslint:disable-next-line:no-var-requires
+const Stomp = require('stomp-websocket');
+
 function TeacherService() {
 
   const eventStreamMarshaller = new marshaller.EventStreamMarshaller(util_utf8_node.toUtf8, util_utf8_node.fromUtf8);
@@ -18,85 +23,90 @@ function TeacherService() {
   const sampleRate: number = 44100;
   let noPartial = '';
   let partial = '';
-  let socket: any;
+  let awsTranscribeSocket: any;
+  let backendSocket: any;
+  let stompClient: any;
   let socketError = false;
   let transcribeException = false;
 
-  const streamAudioToWebSocket = (userMediaStream: any) => {
+  const streamAudioToWebSocket = (userMediaStream: any, updateState: any) => {
     micStream = new MicrophoneStream();
     micStream.setStream(userMediaStream);
 
     const url = createPresignedUrl();
 
-    socket = new WebSocket(url);
-    socket.binaryType = 'arraybuffer';
+    awsTranscribeSocket = new WebSocket(url);
+    awsTranscribeSocket.binaryType = 'arraybuffer';
 
-    socket.onopen = () => {
+    backendSocket = new SockJS('http://localhost:8080/api');
+    stompClient = Stomp.over(backendSocket);
+    stompClient.connect();
+
+    awsTranscribeSocket.onopen = () => {
       micStream.on('data', (rawAudioChunk: any) => {
         const binary = convertAudioToBinaryMessage(rawAudioChunk);
 
-        if (socket.OPEN) {
-          socket.send(binary);
+        if ( awsTranscribeSocket.OPEN ) {
+          awsTranscribeSocket.send(binary);
         }
       });
     };
 
-    wireSocketEvents();
+    wireSocketEvents(updateState);
   };
 
-  function wireSocketEvents() {
-    socket.onmessage = (message: any) => {
+  function wireSocketEvents(updateState: any) {
+    awsTranscribeSocket.onmessage = (message: any) => {
       const messageWrapper = eventStreamMarshaller.unmarshall(new Buffer(message.data));
       const messageBody = JSON.parse(String.fromCharCode.apply(String, Array.from(messageWrapper.body)));
-      if (messageWrapper.headers[':message-type'].value === 'event') {
-        handleEventStreamMessage(messageBody);
+      if ( messageWrapper.headers[':message-type'].value === 'event' ) {
+        handleEventStreamMessage(messageBody, updateState);
       } else {
         transcribeException = true;
       }
     };
 
-    socket.onerror = () => {
+    awsTranscribeSocket.onerror = () => {
       socketError = true;
     };
 
-    socket.onclose = (closeEvent: any) => micStream.stop();
+    awsTranscribeSocket.onclose = (closeEvent: any) => micStream.stop();
   }
 
-  const handleEventStreamMessage = (messageJson: any) => {
+  const handleEventStreamMessage = (messageJson: any, updateState: any) => {
     const results = messageJson.Transcript.Results;
 
-    if (results.length > 0) {
-      if (results[0].Alternatives.length > 0) {
+    if ( results.length > 0 ) {
+      if ( results[0].Alternatives.length > 0 ) {
         let transcript = results[0].Alternatives[0].Transcript;
-        console.log('transcript: ', transcript);
         transcript = decodeURIComponent(escape(transcript));
 
         partial = transcript + '\n';
-        console.log('partial: ', partial);
-        if (!results[0].IsPartial) {
+        if ( !results[0].IsPartial ) {
 
           noPartial += partial + '\n';
-          console.log('noPartial: ', noPartial);
           partial = '';
         }
+        updateState(partial, noPartial);
+        stompClient.send('/app/transcribe', '', JSON.stringify({ partial, noPartial }));
       }
     }
   };
 
   const closeSocket = () => {
-    if (socket.OPEN) {
+    if ( awsTranscribeSocket.OPEN ) {
       micStream.stop();
 
       const emptyMessage = getAudioEventMessage(Buffer.from(new Buffer([])));
       const emptyBuffer = eventStreamMarshaller.marshall(emptyMessage);
-      socket.send(emptyBuffer);
+      awsTranscribeSocket.send(emptyBuffer);
     }
   };
 
   function convertAudioToBinaryMessage(audioChunk: any) {
     const raw = MicrophoneStream.toRaw(audioChunk);
 
-    if (raw == null) {
+    if ( raw == null ) {
       return;
     }
 
@@ -133,8 +143,8 @@ function TeacherService() {
       'transcribe',
       crypto.createHash('sha256').update('', 'utf8').digest('hex'),
       {
-        key: 'AKIAYF5UWBU43JHQISGN',
-        secret: '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',
+        key: 'AKIAYF5UWBU47XG4T3AM',
+        secret: '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',
         sessionToken: '',
         protocol: 'wss',
         expires: 15,
