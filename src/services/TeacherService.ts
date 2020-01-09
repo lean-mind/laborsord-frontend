@@ -13,9 +13,9 @@ function TeacherService() {
   const eventStreamMarshaller = new marshaller.EventStreamMarshaller(util_utf8_node.toUtf8, util_utf8_node.fromUtf8);
 
   let micStream: any;
-  let languageCode: any = 'es-US';
-  let region: string = 'eu-west-1';
-  let sampleRate: number = 44100;
+  const languageCode: any = 'es-US';
+  const region: string = 'eu-west-1';
+  const sampleRate: number = 44100;
   let noPartial = '';
   let partial = '';
   let socket: any;
@@ -72,9 +72,11 @@ function TeacherService() {
         transcript = decodeURIComponent(escape(transcript));
 
         partial = transcript + '\n';
-
+        console.log('partial: ', partial);
         if (!results[0].IsPartial) {
+
           noPartial += partial + '\n';
+          console.log('noPartial: ', noPartial);
           partial = '';
         }
       }
