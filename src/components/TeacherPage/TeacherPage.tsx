@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './TeacherPage.scss';
+import { useState } from 'react';
 
 interface Dependencies {
   teacherService: any;
@@ -7,10 +8,12 @@ interface Dependencies {
 
 export const TeacherPage: React.FC<Dependencies> = ({teacherService}) => {
 
-  const [transcription, setTranscription] = React.useState(teacherService.getTranscription());
+  const [partial, setPartial] = useState(teacherService.getPartial());
+  const [noPartial, setNoPartial] = useState(teacherService.getNoPartial());
 
   window.setInterval(() => {
-    setTranscription(teacherService.getTranscription());
+    setPartial(teacherService.getPartial());
+    setNoPartial(teacherService.getNoPartial());
   }, 100);
 
   const startAudio = () => {
@@ -33,7 +36,8 @@ export const TeacherPage: React.FC<Dependencies> = ({teacherService}) => {
         <button onClick={stopAudio}>Stop Audio</button>
       </div>
       <div>
-        {transcription.split('\n').map(renderTranscriptionParagraph)}
+        {noPartial /*{transcription.split('\n').map(renderTranscriptionParagraph)}*/}
+        {partial}
       </div>
     </div>
   );

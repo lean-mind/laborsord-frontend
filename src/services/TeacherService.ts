@@ -24,7 +24,9 @@ function TeacherService() {
   let languageCode: any = 'es-US';
   let region: string = 'eu-west-1';
   let sampleRate: number = 44100;
-  let transcription = '';
+  // let transcription = '';
+  let noPartial = '';
+  let partial = '';
   let socket: any;
   let socketError = false;
   let transcribeException = false;
@@ -109,25 +111,30 @@ function TeacherService() {
     if (results.length > 0) {
       if (results[0].Alternatives.length > 0) {
         let transcript = results[0].Alternatives[0].Transcript;
-
+        console.log('transcript: ', transcript);
         // fix encoding for accented characters
         transcript = decodeURIComponent(escape(transcript));
 
-        transcription += transcript + '\n';
-        console.log(transcription);
+        // transcription += transcript + '\n';
+        partial = transcript + '\n';
+
+        // console.log('transcription: ', transcription);
 
         // update the textarea with the latest result
         // $('#transcript').val(transcription + transcript + '\n');
         // ToDo: Mandar al componente la transcripcion
 
         // if this transcript segment is final, add it to the overall transcription
-        // if (!results[0].IsPartial) {
+        if (!results[0].IsPartial) {
         //   // scroll the textarea down
         //   // $('#transcript').scrollTop($('#transcript')[0].scrollHeight);
         //   // ToDo: Mandar al componente la transcripcion
         //
         //   transcription += transcript + '\n';
-        // }
+          noPartial += partial + '\n';
+          partial = '';
+          // console.log('partial - transcription: ', transcription);
+        }
       }
     }
   };
@@ -220,9 +227,11 @@ function TeacherService() {
     );
   }
 
-  const getTranscription = () => transcription;
+  // const getTranscription = () => transcription;
+  const getPartial = () => partial;
+  const getNoPartial = () => noPartial;
 
-  return {streamAudioToWebSocket, closeSocket, getTranscription};
+  return {streamAudioToWebSocket, closeSocket, getPartial, getNoPartial};
 }
 
 export {TeacherService};
