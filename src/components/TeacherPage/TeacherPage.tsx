@@ -25,10 +25,6 @@ export const TeacherPage: React.FC<Dependencies> = ({teacherService}) => {
     teacherService.closeSocket();
   };
 
-  const renderTranscriptionParagraph = (paragraph: string) => {
-    return <p>{paragraph}</p>;
-  };
-
   return (
     <div className="TeacherPage">
       <div>
@@ -36,7 +32,7 @@ export const TeacherPage: React.FC<Dependencies> = ({teacherService}) => {
         <button onClick={stopAudio}>Stop Audio</button>
       </div>
       <div>
-        {noPartial /*{transcription.split('\n').map(renderTranscriptionParagraph)}*/}
+        {noPartial}
         {partial}
       </div>
     </div>
