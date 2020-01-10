@@ -1,79 +1,87 @@
 import * as audioUtils from './audioUtils';
 import crypto from 'crypto';
 import * as v4 from './aws-signature-v4';
-// tslint:disable-next-line:no-var-requires variable-name
-const util_utf8_node = require('@aws-sdk/util-utf8-node');
-// tslint:disable-next-line:no-var-requires
-const marshaller = require('@aws-sdk/eventstream-marshaller');
-// tslint:disable-next-line:no-var-requires
-const MicrophoneStream = require('microphone-stream');
+import { toUtf8, fromUtf8 } from '@aws-sdk/util-utf8-node';
+import { EventStreamMarshaller } from '@aws-sdk/eventstream-marshaller';
+// @ts-ignore
+import * as MicrophoneStream from 'microphone-stream';
 
 // tslint:disable-next-line:no-var-requires
 const SockJS = require('sockjs-client');
 // tslint:disable-next-line:no-var-requires
 const Stomp = require('stomp-websocket');
 
-function TeacherService() {
+export class TeacherService {
+  private URL_API = 'http://localhost:8080/api';
 
-  const eventStreamMarshaller = new marshaller.EventStreamMarshaller(util_utf8_node.toUtf8, util_utf8_node.fromUtf8);
+  private readonly eventStreamMarshaller: EventStreamMarshaller;
+  private readonly languageCode: string;
+  private readonly region: string;
+  private readonly sampleRate: number;
+  public noPartial: string;
+  public partial: string;
+  private socketError: boolean;
+  private transcribeException: boolean;
+  private micStream: any;
+  private awsTranscribeSocket: any;
+  private backendSocket: any;
+  private stompClient: any;
 
-  let micStream: any;
-  const languageCode: any = 'es-US';
-  const region: string = 'eu-west-1';
-  const sampleRate: number = 44100;
-  let noPartial = '';
-  let partial = '';
-  let awsTranscribeSocket: any;
-  let backendSocket: any;
-  let stompClient: any;
-  let socketError = false;
-  let transcribeException = false;
+  constructor() {
+    this.eventStreamMarshaller = new EventStreamMarshaller(toUtf8, fromUtf8);
+    this.languageCode = 'es-US';
+    this.region = 'eu-west-1';
+    this.sampleRate = 44100;
+    this.noPartial = '';
+    this.partial = '';
+    this.socketError = false;
+    this.transcribeException = false;
+  }
 
-  const streamAudioToWebSocket = (userMediaStream: any, updateState: any) => {
-    micStream = new MicrophoneStream();
-    micStream.setStream(userMediaStream);
+  public streamAudioToWebSocket(userMediaStream: any, updateState: any) {
+    this.micStream = new MicrophoneStream();
+    this.micStream.setStream(userMediaStream);
 
-    const url = createPresignedUrl();
+    const url = this.createPresignedUrl();
+    this.awsTranscribeSocket = new WebSocket(url);
+    this.awsTranscribeSocket.binaryType = 'arraybuffer';
 
-    awsTranscribeSocket = new WebSocket(url);
-    awsTranscribeSocket.binaryType = 'arraybuffer';
+    // this.backendSocket = new SockJS(this.URL_API);
+    // this.stompClient = Stomp.over(this.backendSocket);
+    // this.stompClient.connect();
 
-    backendSocket = new SockJS('http://localhost:8080/api');
-    stompClient = Stomp.over(backendSocket);
-    stompClient.connect();
+    this.awsTranscribeSocket.onopen = () => {
+      this.micStream.on('data', (rawAudioChunk: any) => {
+        const binary = this.convertAudioToBinaryMessage(rawAudioChunk);
 
-    awsTranscribeSocket.onopen = () => {
-      micStream.on('data', (rawAudioChunk: any) => {
-        const binary = convertAudioToBinaryMessage(rawAudioChunk);
-
-        if ( awsTranscribeSocket.OPEN ) {
-          awsTranscribeSocket.send(binary);
+        if ( this.awsTranscribeSocket.OPEN ) {
+          this.awsTranscribeSocket.send(binary);
         }
       });
     };
 
-    wireSocketEvents(updateState);
-  };
+    this.wireSocketEvents(updateState);
+  }
 
-  function wireSocketEvents(updateState: any) {
-    awsTranscribeSocket.onmessage = (message: any) => {
-      const messageWrapper = eventStreamMarshaller.unmarshall(new Buffer(message.data));
+  private wireSocketEvents(updateState: any) {
+    this.awsTranscribeSocket.onmessage = (message: any) => {
+      const messageWrapper = this.eventStreamMarshaller.unmarshall(new Buffer(message.data));
       const messageBody = JSON.parse(String.fromCharCode.apply(String, Array.from(messageWrapper.body)));
       if ( messageWrapper.headers[':message-type'].value === 'event' ) {
-        handleEventStreamMessage(messageBody, updateState);
+        this.handleEventStreamMessage(messageBody, updateState);
       } else {
-        transcribeException = true;
+        this.transcribeException = true;
       }
     };
 
-    awsTranscribeSocket.onerror = () => {
-      socketError = true;
+    this.awsTranscribeSocket.onerror = () => {
+      this.socketError = true;
     };
 
-    awsTranscribeSocket.onclose = (closeEvent: any) => micStream.stop();
+    this.awsTranscribeSocket.onclose = (closeEvent: any) => this.micStream.stop();
   }
 
-  const handleEventStreamMessage = (messageJson: any, updateState: any) => {
+  private handleEventStreamMessage(messageJson: any, updateState: any) {
     const results = messageJson.Transcript.Results;
 
     if ( results.length > 0 ) {
@@ -81,43 +89,44 @@ function TeacherService() {
         let transcript = results[0].Alternatives[0].Transcript;
         transcript = decodeURIComponent(escape(transcript));
 
-        partial = transcript + '\n';
+        this.partial = transcript + '\n';
         if ( !results[0].IsPartial ) {
 
-          noPartial += partial + '\n';
-          partial = '';
+          this.noPartial += this.partial + '\n';
+          this.partial = '';
         }
-        updateState(partial, noPartial);
-        stompClient.send('/app/transcribe', '', JSON.stringify({ partial, noPartial }));
+        updateState(this.partial, this.noPartial);
+        const state = { partial: this.partial, noPartial: this.noPartial };
+        // this.stompClient.send('/app/transcribe', '', JSON.stringify(state));
       }
     }
-  };
+  }
 
-  const closeSocket = () => {
-    if ( awsTranscribeSocket.OPEN ) {
-      micStream.stop();
+  public closeSocket() {
+    if ( this.awsTranscribeSocket.OPEN ) {
+      this.micStream.stop();
 
-      const emptyMessage = getAudioEventMessage(Buffer.from(new Buffer([])));
-      const emptyBuffer = eventStreamMarshaller.marshall(emptyMessage);
-      awsTranscribeSocket.send(emptyBuffer);
+      const emptyMessage = this.getAudioEventMessage(Buffer.from(new Buffer([])));
+      const emptyBuffer = this.eventStreamMarshaller.marshall(emptyMessage as any);
+      this.awsTranscribeSocket.send(emptyBuffer);
     }
-  };
+  }
 
-  function convertAudioToBinaryMessage(audioChunk: any) {
+  private convertAudioToBinaryMessage(audioChunk: any) {
     const raw = MicrophoneStream.toRaw(audioChunk);
 
     if ( raw == null ) {
       return;
     }
 
-    const downsampledBuffer = audioUtils.downsampleBuffer(raw, sampleRate);
-    const pcmEncodedBuffer = audioUtils.pcmEncode(downsampledBuffer);
-    const audioEventMessage = getAudioEventMessage(Buffer.from(pcmEncodedBuffer));
+    const downSampledBuffer = audioUtils.downsampleBuffer(raw, this.sampleRate);
+    const pcmEncodedBuffer = audioUtils.pcmEncode(downSampledBuffer);
+    const audioEventMessage = this.getAudioEventMessage(Buffer.from(pcmEncodedBuffer));
 
-    return eventStreamMarshaller.marshall(audioEventMessage);
+    return this.eventStreamMarshaller.marshall(audioEventMessage as any);
   }
 
-  function getAudioEventMessage(buffer: any) {
+  private getAudioEventMessage(buffer: any) {
     return {
       headers: {
         ':message-type': {
@@ -133,8 +142,8 @@ function TeacherService() {
     };
   }
 
-  function createPresignedUrl() {
-    const endpoint = 'transcribestreaming.' + region + '.amazonaws.com:8443';
+  private createPresignedUrl() {
+    const endpoint = 'transcribestreaming.' + this.region + '.amazonaws.com:8443';
 
     return v4.createPresignedURL(
       'GET',
@@ -148,16 +157,9 @@ function TeacherService() {
         sessionToken: '',
         protocol: 'wss',
         expires: 15,
-        region,
-        query: 'language-code=' + languageCode + '&media-encoding=pcm&sample-rate=' + sampleRate,
+        region: this.region,
+        query: 'language-code=' + this.languageCode + '&media-encoding=pcm&sample-rate=' + this.sampleRate,
       },
     );
   }
-
-  const getPartial = () => partial;
-  const getNoPartial = () => noPartial;
-
-  return { streamAudioToWebSocket, closeSocket, getPartial, getNoPartial };
 }
-
-export { TeacherService };

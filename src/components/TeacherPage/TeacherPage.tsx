@@ -1,24 +1,25 @@
 import * as React from 'react';
 import './TeacherPage.scss';
 import { useState } from 'react';
+import { TeacherService } from '../../services/TeacherService';
 
 interface Dependencies {
-  teacherService: any;
+  teacherService: TeacherService;
 }
 
 export const TeacherPage: React.FC<Dependencies> = ({ teacherService }) => {
-  const [partial, setPartial] = useState(teacherService.getPartial());
-  const [noPartial, setNoPartial] = useState(teacherService.getNoPartial());
+  const [partial, setPartial] = useState(teacherService.partial);
+  const [noPartial, setNoPartial] = useState(teacherService.noPartial);
   const [isListening, setIsListening] = useState(false);
 
   const updateState = (updatedPartial: string, updatedNoPartial: string) => {
     if ( updatedPartial !== partial ) {
       console.log('updated partial');
-      setPartial(teacherService.getPartial());
+      setPartial(teacherService.partial);
     }
     if ( updatedNoPartial !== noPartial ) {
       console.log('updated NO partial');
-      setNoPartial(teacherService.getNoPartial());
+      setNoPartial(teacherService.noPartial);
     }
   };
 
