@@ -5,11 +5,9 @@ import { toUtf8, fromUtf8 } from '@aws-sdk/util-utf8-node';
 import { EventStreamMarshaller } from '@aws-sdk/eventstream-marshaller';
 // @ts-ignore
 import * as MicrophoneStream from 'microphone-stream';
-
-// tslint:disable-next-line:no-var-requires
-const SockJS = require('sockjs-client');
-// tslint:disable-next-line:no-var-requires
-const Stomp = require('stomp-websocket');
+import SockJS from 'sockjs-client';
+// @ts-ignore
+import Stomp from 'stomp-websocket';
 
 export class TeacherService {
   private URL_API = 'http://localhost:8080/api';
@@ -24,11 +22,13 @@ export class TeacherService {
   private transcribeException: boolean;
   private micStream: any;
   private awsTranscribeSocket: any;
-  private backendSocket: any;
+  private readonly backendSocket: any;
   private stompClient: any;
 
   constructor() {
     this.eventStreamMarshaller = new EventStreamMarshaller(toUtf8, fromUtf8);
+    this.backendSocket = new SockJS(this.URL_API);
+    this.stompClient = Stomp.over(this.backendSocket);
     this.languageCode = 'es-US';
     this.region = 'eu-west-1';
     this.sampleRate = 44100;
@@ -46,9 +46,7 @@ export class TeacherService {
     this.awsTranscribeSocket = new WebSocket(url);
     this.awsTranscribeSocket.binaryType = 'arraybuffer';
 
-    // this.backendSocket = new SockJS(this.URL_API);
-    // this.stompClient = Stomp.over(this.backendSocket);
-    // this.stompClient.connect();
+    this.stompClient.connect();
 
     this.awsTranscribeSocket.onopen = () => {
       this.micStream.on('data', (rawAudioChunk: any) => {
@@ -97,7 +95,7 @@ export class TeacherService {
         }
         updateState(this.partial, this.noPartial);
         const state = { partial: this.partial, noPartial: this.noPartial };
-        // this.stompClient.send('/app/transcribe', '', JSON.stringify(state));
+        this.stompClient.send('/app/transcribe', '', JSON.stringify(state));
       }
     }
   }
