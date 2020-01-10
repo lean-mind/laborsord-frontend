@@ -143,8 +143,8 @@ function TeacherService() {
       'transcribe',
       crypto.createHash('sha256').update('', 'utf8').digest('hex'),
       {
-        key: 'AKIAYF5UWBU47XG4T3AM',
-        secret: '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',
+        key: process.env.REACT_APP_AWS_ACCESS_KEY,
+        secret: process.env.REACT_APP_AWS_ACCESS_SECRET,
         sessionToken: '',
         protocol: 'wss',
         expires: 15,
