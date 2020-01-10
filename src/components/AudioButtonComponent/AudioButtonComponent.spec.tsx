@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { render, RenderResult } from '@testing-library/react';
-import { TeacherPage} from './';
+import { AudioButtonComponent} from './';
 
-describe('TeacherPage', () => {
+describe('AudioButtonComponent', () => {
   it('should display the default message', () => {
     const renderResult: RenderResult = render(
-      <TeacherPage/>,
+      <AudioButtonComponent/>,
     );
-    expect(renderResult.queryByText('Hello from TeacherPage!')).toBeTruthy();
+    expect(renderResult.queryByText('Hello from AudioButtonComponent!')).toBeTruthy();
   });
 });

@@ -37,7 +37,7 @@ export class TeacherService {
     this.transcribeException = false;
   }
 
-  public streamAudioToWebSocket(userMediaStream: any, updateState: any) {
+  public streamAudioToWebSocket(userMediaStream: any) {
     this.micStream = new MicrophoneStream();
     this.micStream.setStream(userMediaStream);
 
@@ -57,15 +57,15 @@ export class TeacherService {
       });
     };
 
-    this.wireSocketEvents(updateState);
+    this.wireSocketEvents();
   }
 
-  private wireSocketEvents(updateState: any) {
+  private wireSocketEvents() {
     this.awsTranscribeSocket.onmessage = (message: any) => {
       const messageWrapper = this.eventStreamMarshaller.unmarshall(new Buffer(message.data));
       const messageBody = JSON.parse(String.fromCharCode.apply(String, Array.from(messageWrapper.body)));
       if (messageWrapper.headers[':message-type'].value === 'event') {
-        this.handleEventStreamMessage(messageBody, updateState);
+        this.handleEventStreamMessage(messageBody);
       } else {
         this.transcribeException = true;
       }
@@ -78,7 +78,7 @@ export class TeacherService {
     this.awsTranscribeSocket.onclose = (closeEvent: any) => this.micStream.stop();
   }
 
-  private handleEventStreamMessage(messageJson: any, updateState: any) {
+  private handleEventStreamMessage(messageJson: any) {
     const results = messageJson.Transcript.Results;
 
     if (results.length > 0) {
@@ -92,7 +92,6 @@ export class TeacherService {
           this.partial = '';
         }
 
-        updateState(this.partial, this.noPartial);
         const state = { partial: this.partial, noPartial: this.noPartial };
         this.stompClient.send('/app/transcribe', {}, JSON.stringify(state));
       }
