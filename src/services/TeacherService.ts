@@ -52,7 +52,7 @@ export class TeacherService {
       this.micStream.on('data', (rawAudioChunk: any) => {
         const binary = this.convertAudioToBinaryMessage(rawAudioChunk);
 
-        if ( this.awsTranscribeSocket.OPEN ) {
+        if (this.awsTranscribeSocket.OPEN) {
           this.awsTranscribeSocket.send(binary);
         }
       });
@@ -65,7 +65,7 @@ export class TeacherService {
     this.awsTranscribeSocket.onmessage = (message: any) => {
       const messageWrapper = this.eventStreamMarshaller.unmarshall(new Buffer(message.data));
       const messageBody = JSON.parse(String.fromCharCode.apply(String, Array.from(messageWrapper.body)));
-      if ( messageWrapper.headers[':message-type'].value === 'event' ) {
+      if (messageWrapper.headers[':message-type'].value === 'event') {
         this.handleEventStreamMessage(messageBody, updateState);
       } else {
         this.transcribeException = true;
@@ -82,17 +82,17 @@ export class TeacherService {
   private handleEventStreamMessage(messageJson: any, updateState: any) {
     const results = messageJson.Transcript.Results;
 
-    if ( results.length > 0 ) {
-      if ( results[0].Alternatives.length > 0 ) {
+    if (results.length > 0) {
+      if (results[0].Alternatives.length > 0) {
         let transcript = results[0].Alternatives[0].Transcript;
         transcript = decodeURIComponent(escape(transcript));
 
         this.partial = transcript + '\n';
-        if ( !results[0].IsPartial ) {
-
+        if (!results[0].IsPartial) {
           this.noPartial += this.partial + '\n';
           this.partial = '';
         }
+
         updateState(this.partial, this.noPartial);
         const state = { partial: this.partial, noPartial: this.noPartial };
         this.stompClient.send('/app/transcribe', '', JSON.stringify(state));
@@ -101,7 +101,7 @@ export class TeacherService {
   }
 
   public closeSocket() {
-    if ( this.awsTranscribeSocket.OPEN ) {
+    if (this.awsTranscribeSocket.OPEN) {
       this.micStream.stop();
 
       const emptyMessage = this.getAudioEventMessage(Buffer.from(new Buffer([])));
@@ -113,7 +113,7 @@ export class TeacherService {
   private convertAudioToBinaryMessage(audioChunk: any) {
     const raw = MicrophoneStream.toRaw(audioChunk);
 
-    if ( raw == null ) {
+    if (raw == null) {
       return;
     }
 
