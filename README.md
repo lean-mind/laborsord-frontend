@@ -1,4 +1,13 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Configuration
+
+Add your AWS credentials to test in the local environment
+
+```
+    cp .env.sample .env.local
+```
+
+change the values of variables `REACT_APP_AWS_ACCESS_KEY` and `REACT_APP_AWS_ACCESS_SECRET`
 
 ## Available Scripts
 
