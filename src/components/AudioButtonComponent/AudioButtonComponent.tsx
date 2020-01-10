@@ -1,10 +1,10 @@
 import * as React from 'react';
 import './AudioButtonComponent.scss';
 import { useState } from 'react';
-import { TeacherService } from '../../services/TeacherService';
+import { AudioService } from '../../services/AudioService';
 
 interface Dependencies {
-  teacherService: TeacherService;
+  teacherService: AudioService;
 }
 
 export const AudioButtonComponent: React.FC<Dependencies> = ({ teacherService }) => {

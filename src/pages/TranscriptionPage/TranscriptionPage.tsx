@@ -1,18 +1,20 @@
 import * as React from 'react';
 import './TranscriptionPage.scss';
-import { TeacherService } from '../../services/TeacherService';
+import { AudioService } from '../../services/AudioService';
 import { AudioButtonComponent } from '../../components/AudioButtonComponent';
 import { TranscriptionComponent } from '../../components/TranscriptionComponent';
+import {ReceiveTranscriptionService} from '../../services/ReceiveTranscriptionService';
 
 interface Dependencies {
-  teacherService: TeacherService;
+  teacherService: AudioService;
+  receiveTranscriptionService: ReceiveTranscriptionService;
 }
 
-export const TranscriptionPage: React.FC<Dependencies> = ({ teacherService }) => {
+export const TranscriptionPage: React.FC<Dependencies> = ({ teacherService, receiveTranscriptionService }) => {
   return (
     <div className="TeacherPage">
       <AudioButtonComponent teacherService={teacherService}/>
-      <TranscriptionComponent partial={teacherService.partial} noPartial={teacherService.noPartial}/>
+      <TranscriptionComponent receiveTranscriptionService={receiveTranscriptionService}/>
     </div>
   );
 };

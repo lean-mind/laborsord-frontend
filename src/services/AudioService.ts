@@ -8,7 +8,7 @@ import * as MicrophoneStream from 'microphone-stream';
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 
-export class TeacherService {
+export class AudioService {
   private URL_API = 'http://localhost:8080/api';
 
   private readonly eventStreamMarshaller: EventStreamMarshaller;
@@ -45,7 +45,7 @@ export class TeacherService {
     this.awsTranscribeSocket = new WebSocket(url);
     this.awsTranscribeSocket.binaryType = 'arraybuffer';
 
-    this.stompClient.connect({}, () => console.log('Connected To Backend'));
+    this.stompClient.connect({}, null);
 
     this.awsTranscribeSocket.onopen = () => {
       this.micStream.on('data', (rawAudioChunk: any) => {
