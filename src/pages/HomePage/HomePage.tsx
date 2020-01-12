@@ -14,13 +14,13 @@ export const HomePage: React.FC<{}> = () => {
     setCode(event.target.value);
   };
 
-  const checkTeacherStudentCode = () => {
-    if (code === '1234') {
+  const checkCode = () => {
+    if (code === process.env.REACT_APP_TEACHER_CODE) {
       if (actions.setIsTeacher) {
         actions.setIsTeacher(true);
       }
     }
-    if (code === '4321') {
+    if (code === process.env.REACT_APP_STUDENT_CODE) {
       if (actions.setIsTeacher) {
         actions.setIsTeacher(false);
       }
@@ -28,14 +28,14 @@ export const HomePage: React.FC<{}> = () => {
   };
 
   const redirectToTranscriptionPage = () => {
-    checkTeacherStudentCode();
+    checkCode();
     history.push('/transcribe');
   };
 
   return (
     <div className="HomePage">
-      <h4>Introduzca su código</h4>
-      <input type="text" onChange={(event) => handleCodeChange(event)}/>
+      <h1>Laborsord</h1>
+      <input type="text" placeholder={'Introduzca su código'} onChange={(event) => handleCodeChange(event)}/>
       <br/>
       <button onClick={redirectToTranscriptionPage}>Entrar</button>
     </div>

@@ -5,9 +5,10 @@ import { AudioService } from '../../services/AudioService';
 
 interface Dependencies {
   teacherService: AudioService;
+  hidden: boolean;
 }
 
-export const AudioButtonComponent: React.FC<Dependencies> = ({ teacherService }) => {
+export const AudioButtonComponent: React.FC<Dependencies> = ({ teacherService, hidden }) => {
   const [isListening, setIsListening] = useState(false);
   const startAudio = () => {
     setIsListening(true);
@@ -23,11 +24,9 @@ export const AudioButtonComponent: React.FC<Dependencies> = ({ teacherService })
   };
 
   return (
-    <div className="AudioButtonComponent">
-      <div>
-        <button onClick={startAudio} disabled={isListening}>Start Audio</button>
-        <button onClick={stopAudio} disabled={!isListening}>Stop Audio</button>
-      </div>
+    <div className="AudioButtonComponent" hidden={hidden}>
+      <button onClick={startAudio} disabled={isListening}>Empezar clase</button>
+      <button onClick={stopAudio} disabled={!isListening}>Parar clase</button>
     </div>
   );
 };

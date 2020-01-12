@@ -18,11 +18,9 @@ export const TranscriptionPage: React.FC<Dependencies> = ({ teacherService, rece
   const renderHeader = () => isTeacher ? 'Profesor' : 'Alumno';
 
   return (
-    <div className="TeacherPage">
-      <h4>{renderHeader()}</h4>
-      <div hidden={!isTeacher}>
-        <AudioButtonComponent teacherService={teacherService}/>
-      </div>
+    <div className="TranscriptionPage">
+      <h1>{renderHeader()}</h1>
+      <AudioButtonComponent teacherService={teacherService} hidden={!isTeacher}/>
       <TranscriptionComponent receiveTranscriptionService={receiveTranscriptionService}/>
     </div>
   );
