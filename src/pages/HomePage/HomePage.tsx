@@ -22,16 +22,14 @@ export const HomePage: FC = () => {
       setIsTeacher(code === process.env.REACT_APP_TEACHER_CODE);
       navigateTo('/transcribe');
     } else {
-      setErrorMessage('Código introducido no valido');
+      setErrorMessage('Código introducido no válido');
     }
   };
 
   return (
     <div className="HomePage">
-      <input type="text" placeholder={'Introduzca su código'} onChange={handleOnChange}/>
-      <br/>
       {errorMessage && <label>{errorMessage}</label>}
-      <br/>
+      <input type="text" placeholder={'Introduzca su código'} onChange={handleOnChange}/>
       <button onClick={handleOnClick}>Entrar</button>
     </div>
   );

@@ -18,7 +18,6 @@ export const TranscriptionPage: React.FC<Dependencies> = ({ teacherService, rece
 
   return (
     <div className="TranscriptionPage">
-      <h1>{tittle}</h1>
       {isTeacher && <AudioButtonComponent teacherService={teacherService}/>}
       <TranscriptionComponent receiveTranscriptionService={receiveTranscriptionService}/>
     </div>

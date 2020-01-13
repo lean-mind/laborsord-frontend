@@ -6,6 +6,7 @@ import { ReceiveTranscriptionService } from './services/ReceiveTranscriptionServ
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { AppStateProvider } from './LocalState';
+import { HeaderComponent } from './components/HeaderComponent';
 
 const teacherService = new AudioService();
 const receivedTranscriptionService = new ReceiveTranscriptionService();
@@ -13,6 +14,7 @@ const receivedTranscriptionService = new ReceiveTranscriptionService();
 const App: React.FC = () => {
   return (
     <div className="App">
+      <HeaderComponent/>
       <AppStateProvider>
         <Router>
           <Switch>
