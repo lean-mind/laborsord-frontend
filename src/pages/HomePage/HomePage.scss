@@ -30,7 +30,7 @@
     text-align: center;
   }
 
-  input::-webkit-input-placeholder {
+  input::placeholder {
     color: gray;
     opacity: 1;
     font-weight: bold;
