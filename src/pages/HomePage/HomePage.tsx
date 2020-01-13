@@ -1,39 +1,41 @@
 import * as React from 'react';
 import './HomePage.scss';
 import { useAppContext } from '../../LocalState';
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-export const HomePage: React.FC<{}> = () => {
+const VALID_CODES = [process.env.REACT_APP_TEACHER_CODE, process.env.REACT_APP_STUDENT_CODE];
 
-  const history = useHistory();
+export const HomePage: FC = () => {
+  const { push: navigateTo } = useHistory();
   const { setIsTeacher } = useAppContext();
+
   const [code, setCode] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleCodeChange = (event: any) => {
-    setCode(event.target.value);
+  const handleOnChange = (event: any) => setCode(event.target.value);
+
+  const isCodeValid = (): boolean => {
+    const hasError = !(code && VALID_CODES.includes(code));
+    setErrorMessage(hasError ? 'Código introducido no valido' : '');
+    return !hasError;
   };
 
-  const checkCode = () => {
-    if (code === process.env.REACT_APP_TEACHER_CODE) {
-      setIsTeacher(true);
+  const handleOnClick = () => {
+    if (isCodeValid()) {
+      setIsTeacher(code === process.env.REACT_APP_TEACHER_CODE);
+      navigateTo('/transcribe');
     }
-    if (code === process.env.REACT_APP_STUDENT_CODE) {
-      setIsTeacher(false);
-    }
-  };
-
-  const redirectToTranscriptionPage = () => {
-    checkCode();
-    history.push('/transcribe');
   };
 
   return (
     <div className="HomePage">
       <h1>Laborsord</h1>
-      <input type="text" placeholder={'Introduzca su código'} onChange={(event) => handleCodeChange(event)}/>
+      <input type="text" placeholder={'Introduzca su código'} onChange={handleOnChange}/>
       <br/>
-      <button onClick={redirectToTranscriptionPage}>Entrar</button>
+      {errorMessage && <label>{errorMessage}</label>}
+      <br/>
+      <button onClick={handleOnClick}>Entrar</button>
     </div>
   );
 };
