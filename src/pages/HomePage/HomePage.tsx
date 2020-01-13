@@ -29,8 +29,8 @@ export const HomePage: FC = () => {
   return (
     <div className="HomePage">
       {errorMessage && <label>{errorMessage}</label>}
-      <input type="text" placeholder={'Introduzca su código'} onChange={handleOnChange}/>
-      <button onClick={handleOnClick}>Entrar</button>
+      <input type="text" placeholder={'Introduzca el código de acceso'} onChange={handleOnChange}/>
+      <button onClick={handleOnClick}>ACCEDER</button>
     </div>
   );
 };

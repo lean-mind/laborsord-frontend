@@ -21,8 +21,8 @@ export const AudioButtonComponent: FC<Dependencies> = ({ teacherService }) => {
 
   return (
     <div className="AudioButtonComponent">
-      <button onClick={startAudio} disabled={isListening}>Empezar clase</button>
-      <button onClick={stopAudio} disabled={!isListening}>Parar clase</button>
+      <button className="start" onClick={startAudio} disabled={isListening}>Empezar clase</button>
+      <button className="stop" onClick={stopAudio} disabled={!isListening}>Parar clase</button>
     </div>
   );
 };

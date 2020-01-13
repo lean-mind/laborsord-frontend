@@ -25,8 +25,8 @@ export const TranscriptionComponent: React.FC<Dependencies> = ({ receiveTranscri
   }, [receiveTranscriptionService, partial, noPartial]);
 
   return (
-    <div className="StudentPages">
-      <div>
+    <div className="TranscriptionComponent">
+      <div className="Transcription">
         {noPartial}
         {partial}
       </div>

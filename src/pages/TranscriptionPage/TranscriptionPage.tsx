@@ -14,8 +14,6 @@ interface Dependencies {
 export const TranscriptionPage: React.FC<Dependencies> = ({ teacherService, receiveTranscriptionService }) => {
   const { isTeacher } = useAppContext();
 
-  const tittle = isTeacher ? 'Profesor' : 'Alumno';
-
   return (
     <div className="TranscriptionPage">
       {isTeacher && <AudioButtonComponent teacherService={teacherService}/>}
