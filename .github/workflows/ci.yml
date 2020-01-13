@@ -21,7 +21,7 @@ jobs:
       - name: Build
         run: npm build
       - name: Deploy to Heroku
-        uses: AkhileshNS/heroku-deploy@v1.0.0
+        uses: jotamusik/heroku-deploy@patch-1
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "laborsord"
