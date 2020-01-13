@@ -16,5 +16,13 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install
         run: npm install
-      - name: Test
-        run: npm test
+#      - name: Test
+#        run: npm test
+      - name: Build
+        run: npm build
+      - name: Deploy to Heroku
+        uses: AkhileshNS/heroku-deploy@v1.0.0
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "laborsord"
+          heroku_email: "yodralopez@gmail.com"
