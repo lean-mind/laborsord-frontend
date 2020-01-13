@@ -27,6 +27,7 @@ export const TranscriptionComponent: React.FC<Dependencies> = ({ receiveTranscri
   return (
     <div className="TranscriptionComponent">
       <div className="Transcription">
+        {!noPartial && !partial && <p>Esperando a que empiece la clase...</p>}
         {noPartial}
         {partial}
       </div>
