@@ -75,7 +75,7 @@ export class AudioService {
       this.socketError = true;
     };
 
-    this.awsTranscribeSocket.onclose = (closeEvent: any) => this.micStream.stop();
+    this.awsTranscribeSocket.onclose = () => this.micStream.stop();
   }
 
   private handleEventStreamMessage(messageJson: any) {
@@ -127,14 +127,14 @@ export class AudioService {
       headers: {
         ':message-type': {
           type: 'string',
-          value: 'event',
+          value: 'event'
         },
         ':event-type': {
           type: 'string',
-          value: 'AudioEvent',
-        },
+          value: 'AudioEvent'
+        }
       },
-      body: buffer,
+      body: buffer
     };
   }
 
@@ -154,8 +154,8 @@ export class AudioService {
         protocol: 'wss',
         expires: 15,
         region: this.region,
-        query: 'language-code=' + this.languageCode + '&media-encoding=pcm&sample-rate=' + this.sampleRate,
-      },
+        query: 'language-code=' + this.languageCode + '&media-encoding=pcm&sample-rate=' + this.sampleRate
+      }
     );
   }
 }

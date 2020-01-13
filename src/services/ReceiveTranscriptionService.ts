@@ -1,5 +1,5 @@
 import SockJS from 'sockjs-client';
-import {Message, Stomp} from '@stomp/stompjs';
+import { Message, Stomp } from '@stomp/stompjs';
 
 export class ReceiveTranscriptionService {
   private URL_API = 'http://localhost:8080/api';
