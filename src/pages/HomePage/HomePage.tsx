@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom';
 export const HomePage: React.FC<{}> = () => {
 
   const history = useHistory();
-  const { actions } = useAppContext();
+  const { setIsTeacher } = useAppContext();
   const [code, setCode] = useState('');
 
   const handleCodeChange = (event: any) => {
@@ -16,14 +16,10 @@ export const HomePage: React.FC<{}> = () => {
 
   const checkCode = () => {
     if (code === process.env.REACT_APP_TEACHER_CODE) {
-      if (actions.setIsTeacher) {
-        actions.setIsTeacher(true);
-      }
+      setIsTeacher(true);
     }
     if (code === process.env.REACT_APP_STUDENT_CODE) {
-      if (actions.setIsTeacher) {
-        actions.setIsTeacher(false);
-      }
+      setIsTeacher(false);
     }
   };
 

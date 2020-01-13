@@ -1,27 +1,18 @@
-import React from 'react';
-
-interface LocalStateActions {
-  setIsTeacher?(updatedIsTeacher: boolean): void;
-}
+import React, { createContext, FC, useContext, useState } from 'react';
 
 interface LocalState {
   isTeacher: boolean;
-  actions: LocalStateActions;
+  setIsTeacher: (updatedIsTeacher: boolean) => void;
 }
 
-const LocalStateContext = React.createContext<LocalState>({ isTeacher: false, actions: {} });
+const LocalStateContext = createContext<LocalState | null>(null);
 
-const AppStateProvider: React.FC<{}> = ({ children }) => {
-
-  const [ isTeacher, setIsTeacher ] = React.useState<boolean>(false);
+const AppStateProvider: FC = ({ children }) => {
+  const [isTeacher, setIsTeacher] = useState<boolean>(false);
 
   const localState: LocalState = {
     isTeacher,
-    actions: {
-      setIsTeacher(updatedIsTeacher: boolean): void {
-        setIsTeacher(updatedIsTeacher);
-      },
-    },
+    setIsTeacher,
   };
 
   return (
@@ -33,7 +24,11 @@ const AppStateProvider: React.FC<{}> = ({ children }) => {
 };
 
 const useAppContext = (): LocalState => {
-  return React.useContext(LocalStateContext);
+  const context = useContext(LocalStateContext);
+  if (!context) {
+    throw new Error('useAppContext must be used within an AppStateProvider');
+  }
+  return context;
 };
 
 export { AppStateProvider, useAppContext };
