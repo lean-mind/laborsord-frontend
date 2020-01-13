@@ -3,6 +3,7 @@ import './HomePage.scss';
 import { useAppContext } from '../../LocalState';
 import { FC, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { HeaderComponent } from '../../components/HeaderComponent';
 
 const VALID_CODES = [process.env.REACT_APP_TEACHER_CODE, process.env.REACT_APP_STUDENT_CODE];
 
@@ -14,23 +15,19 @@ export const HomePage: FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleOnChange = (event: any) => setCode(event.target.value);
-
-  const isCodeValid = (): boolean => {
-    const hasError = !(code && VALID_CODES.includes(code));
-    setErrorMessage(hasError ? 'Código introducido no valido' : '');
-    return !hasError;
-  };
+  const isCodeValid = (): boolean => !!(code && VALID_CODES.includes(code));
 
   const handleOnClick = () => {
     if (isCodeValid()) {
       setIsTeacher(code === process.env.REACT_APP_TEACHER_CODE);
       navigateTo('/transcribe');
+    } else {
+      setErrorMessage('Código introducido no valido');
     }
   };
 
   return (
     <div className="HomePage">
-      <h1>Laborsord</h1>
       <input type="text" placeholder={'Introduzca su código'} onChange={handleOnChange}/>
       <br/>
       {errorMessage && <label>{errorMessage}</label>}
