@@ -23,6 +23,6 @@ jobs:
       - name: Deploy to Heroku
         uses: jotamusik/heroku-deploy@patch-1
         with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "laborsord"
-          heroku_email: "yodralopez@gmail.com"
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
