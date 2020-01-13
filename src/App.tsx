@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { AppStateProvider } from './LocalState';
 import { HeaderComponent } from './components/HeaderComponent';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 const teacherService = new AudioService();
 const receivedTranscriptionService = new ReceiveTranscriptionService();
@@ -14,9 +15,9 @@ const receivedTranscriptionService = new ReceiveTranscriptionService();
 const App: React.FC = () => {
   return (
     <div className="App">
-      <HeaderComponent/>
       <AppStateProvider>
         <Router>
+          <HeaderComponent/>
           <Switch>
             <Route exact path="/">
               <HomePage/>
@@ -24,6 +25,9 @@ const App: React.FC = () => {
             <Route exact path="/transcribe">
               <TranscriptionPage teacherService={teacherService}
                                  receiveTranscriptionService={receivedTranscriptionService}/>
+            </Route>
+            <Route path="*">
+              <NotFoundPage/>
             </Route>
           </Switch>
         </Router>
