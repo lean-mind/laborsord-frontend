@@ -13,12 +13,8 @@ export const TranscriptionComponent: React.FC<Dependencies> = ({ receiveTranscri
 
   useEffect(() => {
     const updateState = (updatedPartial: string, updatedNoPartial: string) => {
-      if (updatedPartial !== partial) {
-        setPartial(updatedPartial);
-      }
-      if (updatedNoPartial !== noPartial) {
-        setNoPartial(updatedNoPartial);
-      }
+      setPartial(updatedPartial);
+      setNoPartial(updatedNoPartial);
     };
 
     receiveTranscriptionService.receiveTranscription(updateState);
