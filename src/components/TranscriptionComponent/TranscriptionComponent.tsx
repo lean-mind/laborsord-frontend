@@ -22,7 +22,7 @@ export const TranscriptionComponent: React.FC<Dependencies> = ({ receiveTranscri
     };
 
     receiveTranscriptionService.receiveTranscription(updateState);
-  }, [receiveTranscriptionService, partial, noPartial]);
+  }, []);
 
   return (
     <div className="TranscriptionComponent">
