@@ -12,15 +12,14 @@ interface Dependencies {
 }
 
 export const TranscriptionPage: React.FC<Dependencies> = ({ teacherService, receiveTranscriptionService }) => {
-
   const { isTeacher } = useAppContext();
 
-  const renderHeader = () => isTeacher ? 'Profesor' : 'Alumno';
+  const tittle = isTeacher ? 'Profesor' : 'Alumno';
 
   return (
     <div className="TranscriptionPage">
-      <h1>{renderHeader()}</h1>
-      <AudioButtonComponent teacherService={teacherService} hidden={!isTeacher}/>
+      <h1>{tittle}</h1>
+      {isTeacher && <AudioButtonComponent teacherService={teacherService}/>}
       <TranscriptionComponent receiveTranscriptionService={receiveTranscriptionService}/>
     </div>
   );
