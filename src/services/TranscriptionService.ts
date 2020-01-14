@@ -2,7 +2,7 @@ import SockJS from 'sockjs-client';
 import { Message, Stomp } from '@stomp/stompjs';
 
 export class TranscriptionService {
-  private URL_API = process.env.REACT_APP_URL_API;
+  private URL_API = 'https://laborsord-backend.herokuapp.com/';
   private stompClient: any;
 
   public receiveTranscription(updateState: any): void {
