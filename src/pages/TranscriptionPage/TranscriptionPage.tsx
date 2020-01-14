@@ -3,21 +3,22 @@ import './TranscriptionPage.scss';
 import { AudioService } from '../../services/AudioService';
 import { AudioButtonComponent } from '../../components/AudioButtonComponent';
 import { TranscriptionComponent } from '../../components/TranscriptionComponent';
-import { ReceiveTranscriptionService } from '../../services/ReceiveTranscriptionService';
+import { TranscriptionService } from '../../services/TranscriptionService';
 import { useAppContext } from '../../LocalState';
+import { FC } from 'react';
 
 interface Dependencies {
-  teacherService: AudioService;
-  receiveTranscriptionService: ReceiveTranscriptionService;
+  audioService: AudioService;
+  transcriptionService: TranscriptionService;
 }
 
-export const TranscriptionPage: React.FC<Dependencies> = ({ teacherService, receiveTranscriptionService }) => {
+export const TranscriptionPage: FC<Dependencies> = ({ audioService, transcriptionService }) => {
   const { isTeacher } = useAppContext();
 
   return (
     <div className="TranscriptionPage">
-      {isTeacher && <AudioButtonComponent teacherService={teacherService}/>}
-      <TranscriptionComponent receiveTranscriptionService={receiveTranscriptionService}/>
+      {isTeacher && <AudioButtonComponent audioService={audioService}/>}
+      <TranscriptionComponent transcriptionService={transcriptionService}/>
     </div>
   );
 };

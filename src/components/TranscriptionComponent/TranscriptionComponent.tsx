@@ -1,13 +1,13 @@
 import * as React from 'react';
 import './TranscriptionComponent.scss';
-import { ReceiveTranscriptionService } from '../../services/ReceiveTranscriptionService';
-import { useEffect, useState } from 'react';
+import { TranscriptionService } from '../../services/TranscriptionService';
+import { FC, useEffect, useState } from 'react';
 
 interface Dependencies {
-  receiveTranscriptionService: ReceiveTranscriptionService;
+  transcriptionService: TranscriptionService;
 }
 
-export const TranscriptionComponent: React.FC<Dependencies> = ({ receiveTranscriptionService }) => {
+export const TranscriptionComponent: FC<Dependencies> = ({ transcriptionService }) => {
   const [partial, setPartial] = useState('');
   const [noPartial, setNoPartial] = useState('');
 
@@ -17,7 +17,7 @@ export const TranscriptionComponent: React.FC<Dependencies> = ({ receiveTranscri
       setNoPartial(updatedNoPartial);
     };
 
-    receiveTranscriptionService.receiveTranscription(updateState);
+    transcriptionService.receiveTranscription(updateState);
   }, []);
 
   return (

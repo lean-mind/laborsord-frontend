@@ -1,7 +1,7 @@
 import SockJS from 'sockjs-client';
 import { Message, Stomp } from '@stomp/stompjs';
 
-export class ReceiveTranscriptionService {
+export class TranscriptionService {
   private URL_API = 'http://localhost:8080/api';
   private stompClient: any;
 

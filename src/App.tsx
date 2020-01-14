@@ -2,15 +2,15 @@ import React from 'react';
 import './App.css';
 import { TranscriptionPage } from './pages/TranscriptionPage';
 import { AudioService } from './services/AudioService';
-import { ReceiveTranscriptionService } from './services/ReceiveTranscriptionService';
+import { TranscriptionService } from './services/TranscriptionService';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { AppStateProvider } from './LocalState';
 import { HeaderComponent } from './components/HeaderComponent';
 import { NotFoundPage } from './pages/NotFoundPage';
 
-const teacherService = new AudioService();
-const receivedTranscriptionService = new ReceiveTranscriptionService();
+const audioService = new AudioService();
+const transcriptionService = new TranscriptionService();
 
 const App: React.FC = () => {
   return (
@@ -23,8 +23,8 @@ const App: React.FC = () => {
               <HomePage/>
             </Route>
             <Route exact path="/transcribe">
-              <TranscriptionPage teacherService={teacherService}
-                                 receiveTranscriptionService={receivedTranscriptionService}/>
+              <TranscriptionPage audioService={audioService}
+                                 transcriptionService={transcriptionService}/>
             </Route>
             <Route path="*">
               <NotFoundPage/>

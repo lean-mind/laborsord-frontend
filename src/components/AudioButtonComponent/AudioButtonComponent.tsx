@@ -4,22 +4,22 @@ import { FC, useState } from 'react';
 import { AudioService } from '../../services/AudioService';
 
 interface Dependencies {
-  teacherService: AudioService;
+  audioService: AudioService;
 }
 
-export const AudioButtonComponent: FC<Dependencies> = ({ teacherService }) => {
+export const AudioButtonComponent: FC<Dependencies> = ({ audioService }) => {
   const [isListening, setIsListening] = useState(false);
   const startAudio = () => {
     setIsListening(true);
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
       .then((userMediaStream) => {
-        teacherService.streamAudioToWebSocket(userMediaStream);
+        audioService.streamAudioToWebSocket(userMediaStream);
       });
   };
 
   const stopAudio = () => {
     setIsListening(false);
-    teacherService.closeSocket();
+    audioService.closeSocket();
   };
 
   return (
