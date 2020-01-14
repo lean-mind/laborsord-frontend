@@ -2,7 +2,6 @@ import SockJS from 'sockjs-client';
 import { Message, Stomp } from '@stomp/stompjs';
 
 export class TranscriptionService {
-
   private URL_API = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
   private stompClient: any;
 
