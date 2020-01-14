@@ -9,7 +9,7 @@ import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 
 export class AudioService {
-  private URL_API = 'http://laborsord-backend.herokuapp.com/';
+  private URL_API = 'http://laborsord-backend.herokuapp.com/api';
   // process.env.REACT_APP_URL_API || 'http://localhost:8080/api';
 
   private readonly eventStreamMarshaller: EventStreamMarshaller;
