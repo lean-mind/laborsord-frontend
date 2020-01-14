@@ -9,6 +9,7 @@ Add your AWS credentials to test in the local environment
 
 change the values of variables `REACT_APP_AWS_ACCESS_KEY` and `REACT_APP_AWS_ACCESS_SECRET`
 
+
 ## Available Scripts
 
 In the project directory, you can run:
