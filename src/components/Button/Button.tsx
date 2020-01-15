@@ -9,10 +9,10 @@ interface Props {
   ariaLabel?: string;
 }
 
-export const Button: FC<Props> = (props) => {
+export const Button: FC<Props> = ({ onClick, disabled, className, ariaLabel, children}) => {
   return (
-    <button {...props}>
-      {props.children}
+    <button className={className} aria-label={ariaLabel} onClick={onClick} disabled={disabled}>
+      {children}
     </button>
   );
 };

@@ -26,8 +26,8 @@ export const AudioButtons: FC<Dependencies> = ({ audioService }) => {
 
   return (
     <Container className="AudioButtons">
-      <Button className="start" onClick={startAudio} disabled={isListening}>Empezar clase</Button>
-      <Button className="stop" onClick={stopAudio} disabled={!isListening}>Parar clase</Button>
+      <Button className="start" ariaLabel="start" onClick={startAudio} disabled={isListening}>Empezar clase</Button>
+      <Button className="stop" ariaLabel="stop" onClick={stopAudio} disabled={!isListening}>Parar clase</Button>
     </Container>
   );
 };
