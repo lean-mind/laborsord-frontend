@@ -23,7 +23,7 @@ export const TranscriptionComponent: FC<Dependencies> = ({ transcriptionService 
   return (
     <div className="TranscriptionComponent">
       <div className="Transcription">
-        {!noPartial && !partial && <p>Esperando a que empiece la clase...</p>}
+        {!noPartial && !partial && 'Esperando a que empiece la clase...'}
         {noPartial}
         {partial}
       </div>
