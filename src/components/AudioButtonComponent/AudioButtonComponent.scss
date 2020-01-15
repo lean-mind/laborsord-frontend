@@ -1,7 +1,7 @@
 .AudioButtonComponent {
   margin: 10px;
 
-  button {
+  Button {
     margin: 10px;
     width: 231px;
     height: 47px;
@@ -17,19 +17,19 @@
     line-height: 28px;
   }
 
-  button.start {
+  Button.start {
     background: #00A55D;
   }
 
-  button.start:disabled {
+  Button.start:disabled {
     background: rgba(0, 165, 93, 0.54);
   }
 
-  button.stop {
+  Button.stop {
     background: #8B0C42;
   }
 
-  button.stop:disabled {
+  Button.stop:disabled {
     background: rgba(139, 12, 66, 0.54);
   }
 }
