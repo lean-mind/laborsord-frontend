@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './AudioButtonComponent.scss';
+import './AudioButtons.scss';
 import { FC, useState } from 'react';
 import { AudioService } from '../../services/AudioService';
 import { Button } from '../Button';
@@ -9,7 +9,7 @@ interface Dependencies {
   audioService: AudioService;
 }
 
-export const AudioButtonComponent: FC<Dependencies> = ({ audioService }) => {
+export const AudioButtons: FC<Dependencies> = ({ audioService }) => {
   const [isListening, setIsListening] = useState(false);
   const startAudio = () => {
     setIsListening(true);
@@ -25,11 +25,11 @@ export const AudioButtonComponent: FC<Dependencies> = ({ audioService }) => {
   };
 
   return (
-    <Container className="AudioButtonComponent">
+    <Container className="AudioButtons">
       <Button className="start" onClick={startAudio} disabled={isListening}>Empezar clase</Button>
       <Button className="stop" onClick={stopAudio} disabled={!isListening}>Parar clase</Button>
     </Container>
   );
 };
 
-AudioButtonComponent.displayName = 'AudioButtonComponent';
+AudioButtons.displayName = 'AudioButtons';

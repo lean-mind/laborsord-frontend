@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { render, RenderResult } from '@testing-library/react';
-import { HeaderComponent} from './';
+import { Header} from './';
 
 describe('HeaderComponent', () => {
   it('should display the default message', () => {
     const renderResult: RenderResult = render(
-      <HeaderComponent/>,
+      <Header/>,
     );
-    expect(renderResult.queryByText('Hello from HeaderComponent!')).toBeTruthy();
+    expect(renderResult.queryByText('Hello from Header!')).toBeTruthy();
   });
 });

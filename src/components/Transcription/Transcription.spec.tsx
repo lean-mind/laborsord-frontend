@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { render, RenderResult } from '@testing-library/react';
-import { TranscriptionComponent} from './';
+import { Transcription} from './';
 
 describe('StudentPages', () => {
   it('should display the default message', () => {
     const renderResult: RenderResult = render(
-      <TranscriptionComponent/>,
+      <Transcription/>,
     );
-    expect(renderResult.queryByText('Hello from TranscriptionComponent!')).toBeTruthy();
+    expect(renderResult.queryByText('Hello from Transcription!')).toBeTruthy();
   });
 });

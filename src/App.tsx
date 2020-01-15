@@ -6,7 +6,7 @@ import { TranscriptionService } from './services/TranscriptionService';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HomePage } from './pages/HomePage';
 import { AppStateProvider } from './LocalState';
-import { HeaderComponent } from './components/HeaderComponent';
+import { Header } from './components/Header';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { Container } from './components/Container';
 
@@ -18,7 +18,7 @@ const App: React.FC = () => {
     <Container className="App">
       <AppStateProvider>
         <Router>
-          <HeaderComponent/>
+          <Header/>
           <Switch>
             <Route exact path="/">
               <HomePage/>

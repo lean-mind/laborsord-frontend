@@ -1,1 +1,0 @@
-export { TranscriptionComponent } from './TranscriptionComponent';

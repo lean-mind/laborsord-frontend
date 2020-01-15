@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { render, RenderResult } from '@testing-library/react';
-import { AudioButtonComponent} from './';
+import { AudioButtons} from './';
 import { AudioService } from '../../services/AudioService';
 
-describe('AudioButtonComponent', () => {
+describe('AudioButtons', () => {
   it('should display the default message', () => {
     const renderResult: RenderResult = render(
-      <AudioButtonComponent audioService={new AudioService()}/>,
+      <AudioButtons audioService={new AudioService()}/>,
     );
-    expect(renderResult.queryByText('Hello from AudioButtonComponent!')).toBeTruthy();
+    expect(renderResult.queryByText('Hello from AudioButtons!')).toBeTruthy();
   });
 });
