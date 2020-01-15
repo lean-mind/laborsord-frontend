@@ -6,6 +6,7 @@ import { TranscriptionComponent } from '../../components/TranscriptionComponent'
 import { TranscriptionService } from '../../services/TranscriptionService';
 import { useAppContext } from '../../LocalState';
 import { FC } from 'react';
+import { Container } from '../../components/Container';
 
 interface Dependencies {
   audioService: AudioService;
@@ -16,10 +17,10 @@ export const TranscriptionPage: FC<Dependencies> = ({ audioService, transcriptio
   const { isTeacher } = useAppContext();
 
   return (
-    <div className="TranscriptionPage">
+    <Container className="TranscriptionPage">
       {isTeacher && <AudioButtonComponent audioService={audioService}/>}
       <TranscriptionComponent transcriptionService={transcriptionService}/>
-    </div>
+    </Container>
   );
 };
 

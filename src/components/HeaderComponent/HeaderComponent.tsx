@@ -4,11 +4,12 @@ import { FC } from 'react';
 import logo from '../../images/logo-laborsord.png';
 import { Link } from 'react-router-dom';
 import { Img } from '../Img';
+import { Container } from '../Container';
 
 export const HeaderComponent: FC = () => (
-  <div className="HeaderComponent">
+  <Container className="HeaderComponent">
     <Link to="/"><Img src={logo}/></Link>
-  </div>
+  </Container>
 );
 
 HeaderComponent.displayName = 'HeaderComponent';

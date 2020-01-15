@@ -8,13 +8,14 @@ import { HomePage } from './pages/HomePage';
 import { AppStateProvider } from './LocalState';
 import { HeaderComponent } from './components/HeaderComponent';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { Container } from './components/Container';
 
 const audioService = new AudioService();
 const transcriptionService = new TranscriptionService();
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+    <Container className="App">
       <AppStateProvider>
         <Router>
           <HeaderComponent/>
@@ -32,7 +33,7 @@ const App: React.FC = () => {
           </Switch>
         </Router>
       </AppStateProvider>
-    </div>
+    </Container>
   );
 };
 

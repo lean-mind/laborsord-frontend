@@ -2,6 +2,7 @@ import * as React from 'react';
 import './TranscriptionComponent.scss';
 import { TranscriptionService } from '../../services/TranscriptionService';
 import { FC, useEffect, useState } from 'react';
+import { Container } from '../Container';
 
 interface Dependencies {
   transcriptionService: TranscriptionService;
@@ -21,13 +22,13 @@ export const TranscriptionComponent: FC<Dependencies> = ({ transcriptionService 
   }, []);
 
   return (
-    <div className="TranscriptionComponent">
-      <div className="Transcription">
+    <Container className="TranscriptionComponent">
+      <Container className="Transcription">
         {!noPartial && !partial && 'Esperando a que empiece la clase...'}
         {noPartial}
         {partial}
-      </div>
-    </div>
+      </Container>
+    </Container>
   );
 };
 

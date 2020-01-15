@@ -3,6 +3,7 @@ import './AudioButtonComponent.scss';
 import { FC, useState } from 'react';
 import { AudioService } from '../../services/AudioService';
 import { Button } from '../Button';
+import { Container } from '../Container';
 
 interface Dependencies {
   audioService: AudioService;
@@ -24,10 +25,10 @@ export const AudioButtonComponent: FC<Dependencies> = ({ audioService }) => {
   };
 
   return (
-    <div className="AudioButtonComponent">
+    <Container className="AudioButtonComponent">
       <Button className="start" onClick={startAudio} disabled={isListening}>Empezar clase</Button>
       <Button className="stop" onClick={stopAudio} disabled={!isListening}>Parar clase</Button>
-    </div>
+    </Container>
   );
 };
 

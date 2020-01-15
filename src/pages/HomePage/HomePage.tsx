@@ -5,6 +5,7 @@ import { useAppContext } from '../../LocalState';
 import { useHistory } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
+import { Container } from '../../components/Container';
 
 const VALID_CODES = [process.env.REACT_APP_TEACHER_CODE, process.env.REACT_APP_STUDENT_CODE];
 
@@ -28,11 +29,11 @@ export const HomePage: FC = () => {
   };
 
   return (
-    <div className="HomePage">
+    <Container className="HomePage">
       {errorMessage && <label>{errorMessage}</label>}
       <Input type="text" placeholder={'Introduzca el código de acceso'} onChange={handleOnChange}/>
       <Button onClick={handleOnClick}>ACCEDER</Button>
-    </div>
+    </Container>
   );
 };
 
