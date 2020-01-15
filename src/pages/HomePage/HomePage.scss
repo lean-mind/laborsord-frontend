@@ -13,7 +13,7 @@
     text-align: center;
   }
 
-  input {
+  Input {
     margin: 10px;
     width: 495px;
     height: 47px;
@@ -30,7 +30,7 @@
     text-align: center;
   }
 
-  input::placeholder {
+  Input::placeholder {
     color: gray;
     opacity: 1;
     font-weight: bold;

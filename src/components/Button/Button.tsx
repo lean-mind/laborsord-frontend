@@ -2,7 +2,7 @@ import * as React from 'react';
 import './Button.scss';
 
 interface Props {
-  onClick?(event: any): any;
+  onClick?(event: any): void;
   disabled?: boolean;
   className?: string;
 }
