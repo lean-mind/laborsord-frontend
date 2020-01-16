@@ -15,6 +15,8 @@ export const AudioButtons: FC<Dependencies> = ({ audioService }) => {
     setIsListening(true);
     navigator.mediaDevices.getUserMedia({ audio: true, video: false })
       .then((userMediaStream) => {
+        const now = new Date();
+        console.log(`Inicio del envio -> ${now.getMinutes()}:${now.getSeconds()}:${now.getMilliseconds()}`);
         audioService.streamAudioToWebSocket(userMediaStream);
       });
   };

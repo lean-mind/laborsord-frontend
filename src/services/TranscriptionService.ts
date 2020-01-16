@@ -10,6 +10,8 @@ export class TranscriptionService {
     this.stompClient = Stomp.over(socket);
     this.stompClient.connect({}, () => {
       this.stompClient.subscribe('/transcriptions/done', (transcription: Message) => {
+        const now = new Date();
+        console.log(`Recepcion de transcriptio -> ${now.getMinutes()}:${now.getSeconds()}:${now.getMilliseconds()}`);
         const body = JSON.parse(transcription.body);
         updateState(body.partial, body.noPartial);
       });
