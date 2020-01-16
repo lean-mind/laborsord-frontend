@@ -19,6 +19,11 @@ function renderTranscription() {
 describe('Transcription Component', () => {
   it('should display the default message', () => {
     const { defaultText } = renderTranscription();
-    expect(defaultText).toBeDefined();
+    expect(defaultText).not.toBeNull();
+  });
+
+  it('should display text on class start', () => {
+    const { defaultText } = renderTranscription();
+    expect(defaultText).toBeNull();
   });
 });
