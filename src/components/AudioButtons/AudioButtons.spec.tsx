@@ -11,17 +11,24 @@ const renderAudioButton = () => {
 };
 
 describe('AudioButtons', () => {
-  it('should render a start button and a stop button', () => {
+  test('should render a start button and a stop button', () => {
     const { buttonStart, buttonStop } = renderAudioButton();
 
     expect(buttonStart).toBeDefined();
     expect(buttonStop).toBeDefined();
   });
 
-  it('should render a enabled start button and a disabled stop button', () => {
+  test('should render a enabled start button and a disabled stop button', () => {
     const { buttonStart, buttonStop } = renderAudioButton();
 
     expect(buttonStart).not.toHaveAttribute('disabled');
     expect(buttonStop).toHaveAttribute('disabled');
   });
+
+  test('should change to disable start button when clicking in start', () => {
+    const { buttonStart, buttonStop } = renderAudioButton();
+    buttonStart.click();
+    expect(buttonStart).toHaveAttribute('disabled');
+  });
+
 });
