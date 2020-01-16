@@ -4,18 +4,18 @@ import { AudioButtons } from './';
 import { AudioService } from '../../services/AudioService';
 import { BrowserMediaService } from '../../services/BrowserMediaService';
 
-const spyBrowserMediaService: BrowserMediaService = {
+const browserMediaServiceMock: BrowserMediaService = {
   startAudio: jest.fn(() => Promise.resolve()),
 };
 
 // @ts-ignore
-const spyAudioService: AudioService = {
+const audioServiceMock: AudioService = {
   streamAudioToWebSocket: jest.fn(),
 };
 
 const renderAudioButton = () => {
   const utils = render(
-    <AudioButtons audioService={spyAudioService} browserMediaService={spyBrowserMediaService}/>);
+    <AudioButtons audioService={audioServiceMock} browserMediaService={browserMediaServiceMock}/>);
   const buttonStart = utils.getByLabelText('start');
   const buttonStop = utils.getByLabelText('stop');
   return { buttonStart, buttonStop, ...utils };
