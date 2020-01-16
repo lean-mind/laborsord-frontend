@@ -42,5 +42,4 @@ describe('AudioButtons', () => {
     expect(buttonStart).toHaveAttribute('disabled');
     expect(buttonStop).not.toHaveAttribute('disabled');
   });
-
 });

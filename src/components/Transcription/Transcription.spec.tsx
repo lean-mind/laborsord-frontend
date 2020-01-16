@@ -1,12 +1,24 @@
 import * as React from 'react';
 import { render, RenderResult } from '@testing-library/react';
-import { Transcription} from './';
+import { Transcription } from './';
+import { TranscriptionService } from '../../services/TranscriptionService';
 
-describe('StudentPages', () => {
+// @ts-ignore
+const transcriptionServiceMock: TranscriptionService = {
+  receiveTranscription: jest.fn(),
+};
+
+function renderTranscription() {
+  const { queryByText }: RenderResult = render(
+    <Transcription transcriptionService={transcriptionServiceMock}/>,
+  );
+  const defaultText = queryByText('Esperando a que empiece la clase...');
+  return { defaultText };
+}
+
+describe('Transcription Component', () => {
   it('should display the default message', () => {
-    const renderResult: RenderResult = render(
-      <Transcription/>,
-    );
-    expect(renderResult.queryByText('Hello from Transcription!')).toBeTruthy();
+    const { defaultText } = renderTranscription();
+    expect(defaultText).toBeDefined();
   });
 });
