@@ -2,12 +2,23 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import { AudioButtons } from './';
 import { AudioService } from '../../services/AudioService';
+import { BrowserMediaService } from '../../services/BrowserMediaService';
+
+const spyBrowserMediaService: BrowserMediaService = {
+  startAudio: jest.fn(() => Promise.resolve()),
+};
+
+// @ts-ignore
+const spyAudioService: AudioService = {
+  streamAudioToWebSocket: jest.fn(),
+};
 
 const renderAudioButton = () => {
-  const utils = render(<AudioButtons audioService={new AudioService()}/>);
+  const utils = render(
+    <AudioButtons audioService={spyAudioService} browserMediaService={spyBrowserMediaService}/>);
   const buttonStart = utils.getByLabelText('start');
   const buttonStop = utils.getByLabelText('stop');
-  return {buttonStart, buttonStop, ...utils};
+  return { buttonStart, buttonStop, ...utils };
 };
 
 describe('AudioButtons', () => {
@@ -29,6 +40,7 @@ describe('AudioButtons', () => {
     const { buttonStart, buttonStop } = renderAudioButton();
     buttonStart.click();
     expect(buttonStart).toHaveAttribute('disabled');
+    expect(buttonStop).not.toHaveAttribute('disabled');
   });
 
 });

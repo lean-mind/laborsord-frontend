@@ -4,21 +4,25 @@ import { FC, useState } from 'react';
 import { AudioService } from '../../services/AudioService';
 import { Button } from '../Button';
 import { Container } from '../Container';
+import { BrowserMediaService } from '../../services/BrowserMediaService';
 
 interface Dependencies {
   audioService: AudioService;
+  browserMediaService?: BrowserMediaService;
 }
 
-export const AudioButtons: FC<Dependencies> = ({ audioService }) => {
+export const AudioButtons: FC<Dependencies> = ({ audioService, browserMediaService }) => {
   const [isListening, setIsListening] = useState(false);
   const startAudio = () => {
     setIsListening(true);
-    navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-      .then((userMediaStream) => {
-        const now = new Date();
-        console.log(`Inicio del envio -> ${now.getMinutes()}:${now.getSeconds()}:${now.getMilliseconds()}`);
-        audioService.streamAudioToWebSocket(userMediaStream);
-      });
+    if ( browserMediaService ) {
+      browserMediaService.startAudio({ audio: true, video: false })
+        .then((userMediaStream: any) => {
+          const now = new Date();
+          console.log(`Inicio del envio -> ${now.getMinutes()}:${now.getSeconds()}:${now.getMilliseconds()}`);
+          audioService.streamAudioToWebSocket(userMediaStream);
+        });
+    }
   };
 
   const stopAudio = () => {
