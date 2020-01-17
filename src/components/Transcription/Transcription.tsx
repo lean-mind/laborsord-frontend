@@ -8,10 +8,6 @@ interface Dependencies {
   transcriptionService: TranscriptionService;
 }
 
-export enum TranscriptionDataTestId {
-  TEXT= "transcribed-text"
-}
-
 export const Transcription: FC<Dependencies> = ({ transcriptionService }) => {
   const [partial, setPartial] = useState('');
   const [noPartial, setNoPartial] = useState('');
@@ -27,7 +23,7 @@ export const Transcription: FC<Dependencies> = ({ transcriptionService }) => {
 
   return (
     <Container className="TranscriptionParent">
-      <Container className="Transcription" data-testid={TranscriptionDataTestId.TEXT}>
+      <Container className="Transcription">
         {!noPartial && !partial && 'Esperando a que empiece la clase...'}
         {noPartial}
         {partial}
