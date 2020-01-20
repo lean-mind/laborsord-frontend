@@ -5,7 +5,9 @@ Add your AWS credentials to test in the local environment
 
 ```
     cp .env.sample .env.local
+    cp .env.sample .env.test
 ```
+`.env.test` file is necessary to run the tests properly
 
 change the values of variables `REACT_APP_AWS_ACCESS_KEY` and `REACT_APP_AWS_ACCESS_SECRET`
 

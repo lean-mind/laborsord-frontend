@@ -1,13 +1,11 @@
 import * as React from 'react';
 import './Container.scss';
 
-interface Props {
-  className?: string;
-}
+type ContainerProps = React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 
-export const Container: React.FC<Props> = ({ className, children }) => (
-  <div className={className}>
-    {children}
+export const Container: React.FC<ContainerProps> = (props) => (
+  <div {...props}>
+    {props.children}
   </div>
 );
 

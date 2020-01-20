@@ -30,7 +30,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watchAll=false",
-    "dev-test": "react-scripts test",
+    "dev-test": "export NODE_ENV='test'; react-scripts test",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9001 -c .storybook",
     "new-fc": "node_modules/.bin/hygen fc new"

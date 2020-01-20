@@ -32,7 +32,7 @@ export const HomePage: FC = () => {
     <Container className="HomePage">
       {errorMessage && <label>{errorMessage}</label>}
       <Input type="text" placeholder={'Introduzca el código de acceso'} onChange={handleOnChange}/>
-      <Button onClick={handleOnClick}>ACCEDER</Button>
+      <Button ariaLabel="acceder" onClick={handleOnClick}>ACCEDER</Button>
     </Container>
   );
 };
