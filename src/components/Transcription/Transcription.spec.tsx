@@ -12,6 +12,8 @@ describe('Transcription Component', () => {
 
   const expectedPartial = 'expected partial';
   const expectedNoPartial = 'expected no partial';
+  const defaultTextContent = 'Esperando a que empiece la clase...';
+  const transcriptionTextContent = `${expectedNoPartial}${expectedPartial}`;
 
   const mockServiceResponseWith = (response?: ServiceCallback) => {
     // @ts-ignore
@@ -20,30 +22,28 @@ describe('Transcription Component', () => {
     };
   };
 
-  async function renderTranscription() {
-    const { queryByText, container } = await render(
+  function renderTranscription() {
+    const { queryByText, container } = render(
       <Transcription transcriptionService={transcriptionServiceMock}/>,
     );
 
-    const defaultText = await queryByText('Esperando a que empiece la clase...');
-    const transcriptionText = await queryByText(`${expectedNoPartial}${expectedPartial}`);
-    const noPartialText = await queryByText('expected no partial');
-    return { defaultText, transcriptionText, noPartialText, container };
+    const defaultText = queryByText(defaultTextContent);
+    const transcriptionText = queryByText(transcriptionTextContent);
+    return { defaultText, transcriptionText, container };
   }
 
-  it('should display the default message', async () => {
+  it('should display the default message', () => {
     mockServiceResponseWith();
-    const { defaultText } = await renderTranscription();
-    expect(defaultText).not.toBeNull();
+    const { defaultText } = renderTranscription();
+    expect(defaultText?.textContent).toBe(defaultTextContent);
   });
 
-  it('should display text on class start', async () => {
-    mockServiceResponseWith((updateState) => {
-      updateState(expectedPartial, expectedNoPartial);
-    });
-    const { defaultText, transcriptionText } = await renderTranscription();
+  it('should display text on class start', () => {
+    mockServiceResponseWith((updateState) =>
+      updateState(expectedPartial, expectedNoPartial));
+    const { defaultText, transcriptionText } = renderTranscription();
 
     expect(defaultText).toBeNull();
-    expect(transcriptionText).not.toBeNull();
+    expect(transcriptionText?.textContent).toBe(transcriptionTextContent);
   });
 });
