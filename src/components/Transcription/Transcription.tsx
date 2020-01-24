@@ -3,6 +3,8 @@ import './Transcription.scss';
 import { TranscriptionService } from '../../services/TranscriptionService';
 import { FC, useEffect, useState } from 'react';
 import { Container } from '../Container';
+// @ts-ignore
+import { Speech } from 'react-speech';
 
 interface Dependencies {
   transcriptionService: TranscriptionService;
