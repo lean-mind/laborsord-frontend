@@ -1,0 +1,1 @@
+export { AlternativeSpeech } from './AlternativeSpeech';
