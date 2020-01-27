@@ -1,0 +1,1 @@
+export { Speech } from './Speech';

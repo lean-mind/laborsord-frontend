@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { render, RenderResult } from '@testing-library/react';
-import { AlternativeSpeech} from './';
+import { Speech} from './';
 
-describe('AlternativeSpeech', () => {
+describe('Speech', () => {
   it('should display the default message', () => {
     const renderResult: RenderResult = render(
-      <AlternativeSpeech/>,
+      <Speech/>,
     );
-    expect(renderResult.queryByText('Hello from AlternativeSpeech!')).toBeTruthy();
+    expect(renderResult.queryByText('Hello from Speech!')).toBeTruthy();
   });
 });

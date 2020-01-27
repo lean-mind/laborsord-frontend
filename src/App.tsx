@@ -11,62 +11,34 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import { Container } from './components/Container';
 
 // @ts-ignore
-import SpeechToText from 'speech-to-text';
 import { AlternativeSpeech } from './components/AlternativeSpeech';
+import { Speech } from './components/Speech';
+import { AudioButtons } from './components/AudioButtons';
 
 const audioService = new AudioService();
 const transcriptionService = new TranscriptionService();
 
-const App: FC = () => {
-
-  // const [interimText, setInterimText] = useState<string>('pepe');
-  // const [finalisedText, setFinalisedText] = useState<string[]>([]);
-  //
-  // useEffect(() => {
-  //   const onAnythingSaid = (text: string) => {
-  //     console.log(text);
-  //     setInterimText(interimText + text);
-  //   };
-  //   const onFinalized = (text: string) => {
-  //     setFinalisedText([text, ...finalisedText]);
-  //     setInterimText('');
-  //   };
-  //
-  //   if ('webkitSpeechRecognition' in window) {
-  //     const SpeechRecognition = window.webkitSpeechRecognition;
-  //     SpeechRecognition()
-  //   }
-  //
-  //
-  //   // tslint:disable-next-line:no-empty
-  //   const listener = new SpeechToText(onFinalized, () => {}, onAnythingSaid, 'es-ES');
-  //   listener.startListening();
-  //
-  // }, []);
-
-  return (
-    <AlternativeSpeech/>
-  );
-  //   <Container className="App">
-  //     <AppStateProvider>
-  //       <Router>
-  //         <Header/>
-  //         <Switch>
-  //           <Route exact path="/">
-  //             {/*<HomePage/>*/}
-  //           </Route>
-  //           <Route exact path="/transcribe">
-  //             <TranscriptionPage audioService={audioService}
-  //                                transcriptionService={transcriptionService}/>
-  //           </Route>
-  //           <Route path="*">
-  //             <NotFoundPage/>
-  //           </Route>
-  //         </Switch>
-  //       </Router>
-  //     </AppStateProvider>
-  //   </Container>
-  // );
-};
+const App: FC = () => (
+  <Container className="App">
+    <AppStateProvider>
+      <Router>
+        <Header/>
+        <Switch>
+          <Route exact path="/">
+            {/*<HomePage/>*/}
+            <Speech/>
+          </Route>
+          <Route exact path="/transcribe">
+            <TranscriptionPage audioService={audioService}
+                               transcriptionService={transcriptionService}/>
+          </Route>
+          <Route path="*">
+            <NotFoundPage/>
+          </Route>
+        </Switch>
+      </Router>
+    </AppStateProvider>
+  </Container>
+);
 
 export default App;
