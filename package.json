@@ -17,7 +17,7 @@
     "@types/sockjs-client": "^1.1.1",
     "core-util-is": "^1.0.2",
     "microphone-stream": "^5.0.1",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "query-string": "^6.8.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
